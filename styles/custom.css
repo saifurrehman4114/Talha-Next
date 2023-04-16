@@ -1,0 +1,32 @@
+.carousel-control-prev-icon {
+  background-color: rgb(255, 153, 0);
+  color: white;
+}
+.carousel-control-next-icon {
+  background-color: rgb(255, 153, 0);
+  color: white;
+}
+.textHead {
+  color: green;
+  text-align: center;
+}
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 50px 250px;
+}
+.text {
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+  font-size: 19px;
+  font-weight: 500;
+}
+@media (max-width: 380px) {
+  .textHead {
+    font-size: 26px;
+  }
+  .textContainer {
+    font-size: 10px;
+    padding: 5px;
+  }
+}
