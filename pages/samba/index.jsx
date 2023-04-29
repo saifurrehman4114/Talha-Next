@@ -1,13 +1,14 @@
-import { Search } from "@material-ui/icons";
 import Navbar from "../components/Navbar";
-import { useRouter } from "next/router";
 import styled from "styled-components";
-import { mobile } from "../responsive";
+import { mobile } from "../../server/responsive";
 import axios from "axios";
 import { useState } from "react";
 import Product from "../components/Product";
 import Announcement from "../components/Announcement";
 import Footer from "../components/Footer";
+import { definingSchema } from "@/schema";
+import { dbConnect } from "@/util/connect";
+import { BsSearch } from "react-icons/bs";
 const Container = styled.div``;
 
 const Title = styled.h2`
@@ -22,13 +23,20 @@ const FilterContainer = styled.div`
 
 const Filter = styled.div`
   margin: 20px;
-  ${mobile({ width: "0px 20px", display: "flex", flexDirection: "column" })}
+  ${mobile({
+    width: "0px 20px",
+    display: "flex",
+    margin: "0px",
+    marginLeft: "8px",
+    marginTop: "25px",
+  })}
 `;
 
 const FilterText = styled.span`
   font-size: 20px;
   font-weight: 600;
   margin-right: 20px;
+  margin-top: 40px;
   ${mobile({ marginRight: "0px" })}
 `;
 
@@ -44,6 +52,7 @@ const Input = styled.input`
   font-size: 18px;
   padding: 5px;
   border-radius: 5px;
+  ${mobile({ width: "200px" })}
 `;
 const ContainerProducts = styled.div`
   padding: 20px;
@@ -53,19 +62,16 @@ const ContainerProducts = styled.div`
 `;
 const Option = styled.option``;
 
-function ProductList({ product }) {
-  const router = useRouter();
-
-  const { brand } = router.query;
-
+function Samba({ product }) {
   const [products, setProducts] = useState(product);
   const [input, setInput] = useState("");
   // fetchProduct function
 
   const fetchProductsByName = async () => {
+    console.log("inside");
     await axios
-      .post("https://cosmato-organic-pakistan.fly.dev/api/getSomeProducts", {
-        brand: brand,
+      .post("/api/products/getSome", {
+        brand: "samba",
         productName: input,
       })
       .then((res) => {
@@ -76,18 +82,39 @@ function ProductList({ product }) {
         console.log(err);
       });
   };
+  //   const fetchProducts = async () => {
+  //     await axios
+  //       .post("/api/getAllProducts", {
+  //         brand: brand,
+  //       })
+  //       .then((res) => {
+  //         setProducts(res.data);
+  //       })
+  //       .catch((err) => {
+  //         throw new Error(err);
+  //       });
+  //   };
 
   return (
     <Container>
       <Announcement></Announcement>
       <Navbar></Navbar>
-      <Title>{brand.toUpperCase()} PRODUCTS</Title>
+      <Title>SAMBA PRODUCTS</Title>
+
       <FilterContainer>
         <Filter>
-          <FilterText>Search Products:</FilterText>
           <Input value={input} onChange={(e) => setInput(e.target.value)} />
-          <Search
-            style={{ marginLeft: "5px", cursor: "pointer" }}
+          <BsSearch
+            fontSize={30}
+            style={{
+              marginLeft: "15px",
+              cursor: "pointer",
+              border: "1px solid gray",
+
+              padding: "5px",
+              height: "100%",
+              borderRadius: "10px",
+            }}
             onClick={() => {
               fetchProductsByName();
             }}
@@ -103,24 +130,18 @@ function ProductList({ product }) {
     </Container>
   );
 }
-//   server side function
-export async function getServerSideProps({ query }) {
-  const brand = query.brand;
-  var product = await axios
-    .post("https://cosmato-organic-pakistan.fly.dev/api/getAllProducts", {
-      brand: brand,
-    })
-    .then((res) => {
-      return res.data;
-    })
-    .catch((err) => {
-      throw new Error(err);
-    });
+
+export async function getStaticProps() {
+  await dbConnect();
+  let { productModal } = definingSchema();
+
+  let allProducts = await productModal.find({ brand: "samba" });
+
   return {
     props: {
-      product,
+      product: JSON.parse(JSON.stringify(allProducts)),
     },
   };
 }
 
-export default ProductList;
+export default Samba;

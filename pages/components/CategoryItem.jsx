@@ -1,7 +1,7 @@
 import React from "react";
 
 import styled from "styled-components";
-import { mobile } from "../responsive";
+import { mobile } from "../../server/responsive";
 import Link from "next/link";
 
 const Container = styled.div`
@@ -9,15 +9,17 @@ const Container = styled.div`
 
   margin: 3px;
   margin-top: 30px;
+
   height: 70vh;
   position: relative;
+  ${mobile({ margin: "40px 0px", height: "90vh" })}
 `;
 
-const Image = styled.img`
+const Images = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  ${mobile({ height: "40vh" })}
+  object-position: center center;
 `;
 
 const Info = styled.div`
@@ -53,9 +55,9 @@ const Button = styled.button`
 const CategoryItem = ({ item, title }) => {
   return (
     <Container>
-      <Image src={item.img} />
+      <Images src={item.img} />
       <Info>
-        <Link href={`/ProductList/${item.title.toLowerCase()}`}>
+        <Link href={`/${item.title.toLowerCase()}`}>
           <Button>SHOP NOW</Button>
         </Link>
         <Title>{item.title}</Title>

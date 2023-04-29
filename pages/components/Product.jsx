@@ -1,19 +1,16 @@
 import React from "react";
-import {
-  FavoriteBorderOutlined,
-  SearchOutlined,
-  ShoppingCartOutlined,
-} from "@material-ui/icons";
+
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
-import { productAction } from "../slice";
+import { productAction } from "../../server/slice";
 import { useRouter } from "next/router";
+import { mobile } from "../../server/responsive";
 
 const Info = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 0;
+
   left: 0;
   z-index: 3;
   display: flex;
@@ -22,11 +19,13 @@ const Info = styled.div`
   justify-content: flex-end;
   transition: all 0.5s ease;
   cursor: pointer;
+  margin-top: 30px;
 `;
 
 const Container = styled.div`
   flex: 1;
   margin: 5px;
+  margin-top: 20px;
   min-width: 280px;
   height: 350px;
   display: flex;
@@ -34,7 +33,7 @@ const Container = styled.div`
   justify-content: center;
   background-color: #f5fbfd;
   position: relative;
-
+  border-radius: 15px;
   &:hover ${Info} {
     opacity: 1;
   }
@@ -51,6 +50,7 @@ const Circle = styled.div`
 const Image = styled.img`
   height: 75%;
   z-index: 2;
+  margin-top: -83px;
 `;
 
 const Icon = styled.div`
@@ -92,8 +92,16 @@ const Product = ({ item }) => {
       <Image src={item.img[0]} />
 
       <Info>
-        <Name>{item.name}</Name>
-        <Name>Quantity: {item.quantity} ml</Name>
+        <Name>
+          <strong> {item.name}</strong>
+        </Name>
+        <Name>
+          <strong> Quantity:</strong> {item.quantity} ml
+        </Name>
+        <Name>
+          <strong> Price:</strong> {item.price}{" "}
+        </Name>
+        <button className="btn btn-primary">show more</button>
       </Info>
     </Container>
   );

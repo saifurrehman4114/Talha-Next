@@ -1,14 +1,10 @@
-import {
-  Facebook,
-  Instagram,
-  MailOutline,
-  Phone,
-  Room,
-} from "@material-ui/icons";
+import { BsWhatsapp, BsTelephoneFill } from "react-icons/bs";
+import { MdLocationOn } from "react-icons/md";
 import React from "react";
 import styled from "styled-components";
-import { mobile } from "../responsive";
+import { mobile } from "../../server/responsive";
 import Link from "next/link";
+import { AiFillFacebook, AiFillInstagram, AiOutlineMail } from "react-icons/ai";
 const CustomLink = styled.span`
   font-size: 24px;
   cursor: pointer;
@@ -106,14 +102,14 @@ const Footer = () => {
             target="_blank"
             color="3B5999"
           >
-            <Facebook />
+            <AiFillFacebook fontSize={25} />
           </SocialIcon>
           <SocialIcon
             href="https://www.instagram.com/yougeepakistan/?igshid=YmMyMTA2M2Y="
             target="_blank"
             color="E4405F"
           >
-            <Instagram />
+            <AiFillInstagram fontSize={25} />
           </SocialIcon>
         </SocialContainer>
       </Left>
@@ -132,17 +128,21 @@ const Footer = () => {
       <Right>
         <Title>Contact</Title>
         <ContactItem>
-          <Room style={{ marginRight: "10px" }} /> 137 H Model Town, Lahore
+          <MdLocationOn fontSize={30} style={{ marginRight: "10px" }} /> 137 H
+          Model Town, Lahore
         </ContactItem>
         <ContactItem>
-          <Phone style={{ marginRight: "10px" }} /> 03334283529 Talha Tahir
+          <BsWhatsapp fontSize={20} style={{ marginRight: "10px" }} />{" "}
+          <a href="https://wa.me/03334283529"> 03334283529 </a> Talha Tahir
+          (whatsapp)
         </ContactItem>
         <ContactItem>
-          <Phone style={{ marginRight: "10px" }} /> 03334283529 Zahid Atta
+          <BsTelephoneFill fontSize={20} style={{ marginRight: "10px" }} />{" "}
+          03334283529 Zahid Atta
         </ContactItem>
 
         <ContactItem>
-          <MailOutline style={{ marginRight: "10px" }} />
+          <AiOutlineMail fontSize={20} style={{ marginRight: "10px" }} />
           zaent99@gmail.com
         </ContactItem>
       </Right>

@@ -1,10 +1,10 @@
-import { ArrowLeftOutlined, ArrowRightOutlined } from "@material-ui/icons";
 import { useState } from "react";
 import styled from "styled-components";
-import { sliderItems } from "../data";
-import { mobile } from "../responsive";
+import { sliderItems } from "../../server/data";
+import { mobile } from "../../server/responsive";
 import React from "react";
 import { useRouter } from "next/router";
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 const Container = styled.div`
   width: 100%;
   height: 100vh;
@@ -94,7 +94,7 @@ const Slider = () => {
   return (
     <Container>
       <Arrow direction="left" onClick={() => handleClick("left")}>
-        <ArrowLeftOutlined />
+        <AiOutlineArrowLeft />
       </Arrow>
       <Wrapper slideIndex={slideIndex}>
         {sliderItems.map((item) => (
@@ -107,9 +107,7 @@ const Slider = () => {
               <Desc>{item.desc}</Desc>
               <Button
                 onClick={() => {
-                  router.push(
-                    `/ProductList/${item.title.split(" ")[0].toLowerCase()}`
-                  );
+                  router.push(`/${item.title.split(" ")[0].toLowerCase()}`);
                 }}
               >
                 SHOW NOW
@@ -119,7 +117,7 @@ const Slider = () => {
         ))}
       </Wrapper>
       <Arrow direction="right" onClick={() => handleClick("right")}>
-        <ArrowRightOutlined />
+        <AiOutlineArrowRight />
       </Arrow>
     </Container>
   );

@@ -1,14 +1,17 @@
 import React from "react";
-import { Close } from "@material-ui/icons";
-import { useEffect, useState } from "react";
+import { RxCross2 } from "react-icons/rx";
+
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Announcement from "../components/Announcement";
 import Navbar from "../components/Navbar";
-import { mobile } from "../responsive";
-import { orderAction } from "../slice";
+import { mobile } from "../../server/responsive";
+import { orderAction } from "../../server/slice";
 import { useRouter } from "next/router";
-
+import Footer from "../components/Footer";
+import Image from "next/image";
+import Head from "next/head";
 const Container = styled.div``;
 
 const Wrapper = styled.div`
@@ -21,12 +24,12 @@ const ImgContainer = styled.div`
   flex: 1;
 `;
 
-const Image = styled.img`
-  width: 100%;
-  height: 90vh;
-  object-fit: cover;
-  ${mobile({ height: "40vh" })}
-`;
+// const Image = styled.img`
+//   width: 100%;
+//   height: 90vh;
+//   object-fit: cover;
+//   ${mobile({ height: "40vh" })}
+// `;
 
 const InfoContainer = styled.div`
   flex: 1;
@@ -100,12 +103,12 @@ const Product = () => {
       router.push("/cart");
     } else if (item.category == "Hair Color Cream" && colorArray.length == 0) {
       alert("You have to add details about order!");
-    } else if (item.category === "Mask") {
+    } else if (item.category === "developer") {
       let finalItem = {
         name: item.name,
         price: finalPrice,
         itemPrice: item.price,
-        category: "Mask",
+        category: "developer",
         volume: selectedVolume,
         quantity: quantity,
         measure: item.quantity,
@@ -132,233 +135,235 @@ const Product = () => {
   };
 
   return (
-    <Container>
-      <Announcement />
-      <Navbar />
+    <>
+      <Head>
+        <title>{item.name}</title>
+      </Head>
+      <Container>
+        <Announcement />
+        <Navbar />
 
-      <Wrapper>
-        <ImgContainer>
-          <div id="carouselExampleIndicators" className="carousel slide">
-            <ol className="carousel-indicators">
-              {item.img.map((item, index) => {
-                return (
-                  <li
-                    data-target="#carouselExampleIndicators"
-                    data-slide-to={index}
-                    className={index == 0 ? "active" : ""}
-                  ></li>
-                );
-              })}
-            </ol>
-            <div className="carousel-inner">
-              {item.img.map((image, index) => {
-                return (
-                  <div
-                    className={`carousel-item ${index == 0 ? "active" : ""}`}
-                  >
-                    <img
-                      className="d-block w-100"
-                      src={image}
-                      alt="First slide"
-                    />
-                  </div>
-                );
-              })}
+        <Wrapper>
+          <ImgContainer>
+            <div id="carouselExampleIndicators" className="carousel slide">
+              <ol className="carousel-indicators">
+                {item.img.map((item, index) => {
+                  return (
+                    <li
+                      data-target="#carouselExampleIndicators"
+                      data-slide-to={index}
+                      className={index == 0 ? "active" : ""}
+                    ></li>
+                  );
+                })}
+              </ol>
+              <div className="carousel-inner">
+                {item.img.map((image, index) => {
+                  return (
+                    <div
+                      className={`carousel-item ${index == 0 ? "active" : ""}`}
+                    >
+                      <img
+                        className="d-block w-100"
+                        src={image}
+                        alt={item.name}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+              <a
+                className="carousel-control-prev"
+                href="#carouselExampleIndicators"
+                role="button"
+                data-slide="prev"
+              >
+                <span
+                  className="carousel-control-prev-icon"
+                  aria-hidden="true"
+                ></span>
+              </a>
+              <a
+                className="carousel-control-next"
+                href="#carouselExampleIndicators"
+                role="button"
+                data-slide="next"
+              >
+                <span
+                  className="carousel-control-next-icon"
+                  aria-hidden="true"
+                ></span>
+              </a>
             </div>
-            <a
-              className="carousel-control-prev"
-              href="#carouselExampleIndicators"
-              role="button"
-              data-slide="prev"
-            >
-              <span
-                className="carousel-control-prev-icon"
-                aria-hidden="true"
-              ></span>
-            </a>
-            <a
-              className="carousel-control-next"
-              href="#carouselExampleIndicators"
-              role="button"
-              data-slide="next"
-            >
-              <span
-                className="carousel-control-next-icon"
-                aria-hidden="true"
-              ></span>
-            </a>
-          </div>
-        </ImgContainer>
-        <InfoContainer>
-          <Title>{item.name}</Title>
-          <Desc>
-            <strong>DESCRIPTION: </strong>
-            <br />
-            {item.description}
-          </Desc>
-          <Desc>
-            <strong>QUANTITY: </strong>
-            {item.quantity} ml
-          </Desc>
-          <Desc>
-            <strong>Number of items: </strong>
-            <button
-              onClick={() => {
-                setFinalPriceCream((state) => {
-                  return item.price * colorArray.length * (quantity + 1);
-                });
-                setFinalPrice((state) => {
-                  return state + item.price;
-                });
-                setQuantity((state) => {
-                  return state + 1;
-                });
-              }}
-              className="btn btn-danger"
-            >
-              +
-            </button>
-            <strong> {quantity} </strong>
-            <button
-              className="btn btn-danger"
-              onClick={() => {
-                if (quantity > 1) {
-                  setFinalPrice((state) => {
-                    return state - item.price;
-                  });
-                  setFinalPriceCream((state) => {
-                    return item.price * colorArray.length * (quantity - 1);
-                  });
-                }
-                setQuantity((state) => {
-                  if (state > 1) {
-                    return state - 1;
-                  } else {
-                    return state;
-                  }
-                });
-              }}
-            >
-              -
-            </button>
-          </Desc>
-          <Desc>
-            <strong>USAGE:</strong>
-            <br />
-            {item.guide}
-          </Desc>
-          <Desc>
-            <strong>FEATURES:</strong>
-
-            {item.features.map((single, index) => {
-              if (index > 0) {
-                return (
-                  <p>
-                    {"->"}
-                    {single}{" "}
-                  </p>
-                );
-              }
-            })}
-          </Desc>
-          {item.category == "Mask" && (
+          </ImgContainer>
+          <InfoContainer>
+            <Title>{item.name}</Title>
             <Desc>
-              <strong>Volumes:</strong>
-              <select
-                value={selectedVolume}
-                onChange={(e) => {
-                  setSelectedVolume(e.target.value);
+              <strong>DESCRIPTION: </strong>
+              <br />
+              {item.description}
+            </Desc>
+            <Desc>
+              <strong>QUANTITY: </strong>
+              {item.quantity} ml
+            </Desc>
+            <Desc>
+              <strong>Number of items: </strong>
+              <button
+                onClick={() => {
+                  setFinalPriceCream((state) => {
+                    return item.price * colorArray.length * (quantity + 1);
+                  });
+                  setFinalPrice((state) => {
+                    return state + item.price;
+                  });
+                  setQuantity((state) => {
+                    return state + 1;
+                  });
+                }}
+                className="btn btn-danger"
+              >
+                +
+              </button>
+              <strong> {quantity} </strong>
+              <button
+                className="btn btn-danger"
+                onClick={() => {
+                  if (quantity > 1) {
+                    setFinalPrice((state) => {
+                      return state - item.price;
+                    });
+                    setFinalPriceCream((state) => {
+                      return item.price * colorArray.length * (quantity - 1);
+                    });
+                  }
+                  setQuantity((state) => {
+                    if (state > 1) {
+                      return state - 1;
+                    } else {
+                      return state;
+                    }
+                  });
                 }}
               >
-                {item.volume.map((single) => {
-                  return <option value={single}>{single}</option>;
+                -
+              </button>
+            </Desc>
+            <Desc>
+              <strong>USAGE:</strong>
+              <br />
+              {item.guide}
+            </Desc>
+            <Desc>
+              <strong>FEATURES:</strong>
+
+              {item.features.map((single, index) => {
+                if (index > 0) {
+                  return (
+                    <p>
+                      {"->"}
+                      {single}{" "}
+                    </p>
+                  );
+                }
+              })}
+            </Desc>
+            {item.category == "developer" && (
+              <Desc>
+                <strong>Volumes:</strong>
+                <select
+                  value={selectedVolume}
+                  onChange={(e) => {
+                    setSelectedVolume(e.target.value);
+                  }}
+                >
+                  {item.volume.map((single) => {
+                    return <option value={single}>{single}</option>;
+                  })}
+                </select>
+              </Desc>
+            )}
+
+            {item.color.length == 0 || (
+              <Desc>
+                <strong>COLORS SELECTED: </strong>
+                <br />
+                {colorArray.map((item) => {
+                  return (
+                    <Color
+                      onClick={() => {
+                        setColorArray(() => {
+                          let newArr = colorArray.filter((color) => {
+                            return color != item;
+                          });
+                          setFinalPriceCream((state) => {
+                            return item.price * newArr.length * quantity;
+                          });
+                          return newArr;
+                        });
+                      }}
+                    >
+                      {item} <RxCross2 />{" "}
+                    </Color>
+                  );
                 })}
-              </select>
-            </Desc>
-          )}
-
-          {item.color.length == 0 || (
-            <Desc>
-              <strong>COLORS SELECTED: </strong>
-              <br />
-              {colorArray.map((item) => {
-                return (
-                  <Color
-                    onClick={() => {
-                      setColorArray(() => {
-                        let newArr = colorArray.filter((color) => {
-                          return color != item;
-                        });
+              </Desc>
+            )}
+            {item.color == 0 || (
+              <Desc>
+                <strong>
+                  COLORS AVAILABLE: (Check the color from image slider and click
+                  to add the color){" "}
+                </strong>
+                <br />
+                {item.color.map((iteminner) => {
+                  return (
+                    <Color
+                      onClick={() => {
                         setFinalPriceCream((state) => {
-                          return item.price * newArr.length * quantity;
+                          return (
+                            item.price * (colorArray.length + 1) * quantity
+                          );
                         });
-                        return newArr;
-                      });
-                    }}
-                  >
-                    {item} <Close />{" "}
-                  </Color>
-                );
-              })}
-            </Desc>
-          )}
-          {item.color == 0 || (
-            <Desc>
-              <strong>
-                COLORS AVAILABLE: (Check the color from image slider and click
-                to add the color){" "}
-              </strong>
-              <br />
-              {item.color.map((iteminner) => {
-                return (
-                  <Color
-                    onClick={() => {
-                      setFinalPriceCream((state) => {
-                        return item.price * (colorArray.length + 1) * quantity;
-                      });
-                      setColorArray([...colorArray, iteminner]);
-                    }}
-                  >
-                    {iteminner}
-                  </Color>
-                );
-              })}
-            </Desc>
-          )}
-          <Desc>
-            <strong> CATEGORY : </strong> {item.category}
-          </Desc>
-          <Desc>
-            <strong> Status : </strong> {item.status}
-          </Desc>
+                        setColorArray([...colorArray, iteminner]);
+                      }}
+                    >
+                      {iteminner}
+                    </Color>
+                  );
+                })}
+              </Desc>
+            )}
 
-          <Desc>
-            <strong> PRICE : </strong>Rs {item.price} (per item)
-          </Desc>
-          <Desc>
-            <strong>TOTAL PRICE : </strong>Rs{" "}
-            {item.category === "Hair Color Cream"
-              ? finalPriceCream
-              : finalPrice}
-          </Desc>
-          <AddContainer>
-            <button
-              type="button"
-              className="btn btn-success"
-              onClick={(e) => {
-                e.preventDefault();
-                handleSubmit();
-              }}
-            >
-              ADD TO CART
-            </button>
-            <a href={`${item.resource}`} target="_blank">
-              <button className="btn btn-info">MORE INFO</button>
-            </a>
-          </AddContainer>
-        </InfoContainer>
-      </Wrapper>
-    </Container>
+            <Desc>
+              <strong> PRICE : </strong>Rs {item.price} (per item)
+            </Desc>
+            <Desc>
+              <strong>TOTAL PRICE : </strong>Rs{" "}
+              {item.category === "Hair Color Cream"
+                ? finalPriceCream
+                : finalPrice}
+            </Desc>
+            <AddContainer>
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSubmit();
+                }}
+              >
+                ADD TO CART
+              </button>
+              <a href={`${item.resource}`} target="_blank">
+                <button className="btn btn-info">MORE INFO</button>
+              </a>
+            </AddContainer>
+          </InfoContainer>
+        </Wrapper>
+        <Footer />
+      </Container>
+    </>
   );
 };
 

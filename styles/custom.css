@@ -21,7 +21,7 @@
   font-size: 19px;
   font-weight: 500;
 }
-@media (max-width: 380px) {
+@media (max-width: 400px) {
   .textHead {
     font-size: 26px;
   }

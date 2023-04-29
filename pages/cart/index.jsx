@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
-import { mobile } from "../responsive";
-import { orderAction } from "../slice";
+import { mobile } from "../../server/responsive";
+import { orderAction, registerAction } from "../../server/slice";
 import Link from "next/link";
 import Announcement from "../components/Announcement";
 
@@ -69,6 +69,7 @@ const Product = styled.div`
 const ProductDetail = styled.div`
   flex: 2;
   display: flex;
+  ${mobile({ flexDirection: "column" })}
 `;
 
 const Image = styled.img`
@@ -107,18 +108,19 @@ const ProductAmountContainer = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  ${mobile({ marginBottom: "5px" })}
 `;
 
 const ProductAmount = styled.div`
   font-size: 24px;
   margin: 5px;
-  ${mobile({ margin: "5px 15px" })}
+  ${mobile({ margin: "5px 5px", fontSize: "20px" })}
 `;
 
 const ProductPrice = styled.div`
   font-size: 30px;
   font-weight: 200;
-  ${mobile({ marginBottom: "20px" })}
+  ${mobile({ margin: "0px 0px", fontSize: "23px" })}
 `;
 
 const Hr = styled.hr`
@@ -136,6 +138,7 @@ const Summary = styled.div`
 
 const SummaryTitle = styled.h1`
   font-weight: 200;
+  ${mobile({ fontSize: "23px", fontWeight: "300" })}
 `;
 
 const SummaryItem = styled.div`
@@ -148,10 +151,12 @@ const SummaryItem = styled.div`
 
 const SummaryItemText = styled.span`
   flex: 2;
+  ${mobile({ fontSize: "14px" })}
 `;
 
 const SummaryItemPrice = styled.span`
   flex: 4;
+  ${mobile({ flex: 2 })}
 `;
 
 const Button = styled.button`
@@ -172,14 +177,12 @@ const Spacing = styled.div`
   height: 5px;
   margin: 0px 20px;
 `;
+const Danger = styled.h4`
+  color: red;
+  text-align: center;
+`;
 
 const Cart = () => {
-  const items = useSelector((state) => {
-    return state.order.items;
-  });
-  const registered = useSelector((state) => {
-    return state.registered;
-  });
   const emptyItems = orderAction.emptyItems;
   const dispatch = useDispatch();
   const [prevOrders, setPrevOrders] = useState();
@@ -188,15 +191,33 @@ const Cart = () => {
       return state.order;
     })
   );
-
+  const [msg, setMsg] = useState("Cart is empty");
+  const [color, setColor] = useState();
+  const register = registerAction.register;
+  if (userDetail.clientName) {
+    dispatch(register({ state: true }));
+  } else {
+    dispatch(register({ state: false }));
+  }
+  const items = useSelector((state) => {
+    return state.order.items;
+  });
+  const registered = useSelector((state) => {
+    return state.registered;
+  });
   const removeItem = orderAction.removeItem;
 
+  // empty orders
+  const empty = orderAction.emptyItems;
+
+  //state for showing that order is submitted;
+  const [submit, setSubmit] = useState(false);
   var finalPrice = 0;
 
   // /fetching previous orders
   const fetchPrevOrders = async () => {
     await axios
-      .post("https://cosmato-organic-pakistan.fly.dev/api/getUserOrders", {
+      .post("/api/orders/getUserOrders", {
         clientEmail: userDetail.clientEmail,
       })
       .then((res) => {
@@ -210,26 +231,38 @@ const Cart = () => {
 
   //handling checkout
   const checkOut = async () => {
-    await axios
-      .post("https://cosmato-organic-pakistan.fly.dev/api/addOrder", {
-        clientName: userDetail.clientName,
-        clientEmail: userDetail.clientEmail,
-        clientPhone1: userDetail.clientPhone1,
-        clientPhone2: userDetail.clientPhone2,
-        clientAddress: userDetail.clientAddress,
-        clientPostal: userDetail.clientPostal,
-        clientCity: userDetail.clientCity,
-        total: finalPrice,
-        items: items,
-      })
-      .then((res) => {
-        console.log(res.data);
-        dispatch(emptyItems());
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (items.length !== 0) {
+      await axios
+        .post("/api/orders/addOrder", {
+          clientName: userDetail.clientName,
+          clientEmail: userDetail.clientEmail,
+          clientPhone1: userDetail.clientPhone1,
+          clientPhone2: userDetail.clientPhone2,
+          clientAddress: userDetail.clientAddress,
+          clientPostal: userDetail.clientPostal,
+          clientCity: userDetail.clientCity,
+          total: finalPrice,
+          items: items,
+        })
+        .then((res) => {
+          console.log(res.data);
+          dispatch(emptyItems());
+          setSubmit(true);
+          setTimeout(() => {
+            setSubmit(false);
+          }, 2000);
+          fetchPrevOrders();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      setMsg(
+        "Order Successfully Sent, Our company will contact you shortly, Thanks"
+      );
+      setColor("green");
+    } else {
+      alert("You do not have any item in the cart!");
+    }
   };
   useEffect(() => {
     if (registered) {
@@ -251,6 +284,10 @@ const Cart = () => {
         </Top>
         <Bottom>
           <Info>
+            {items.length == 0 && (
+              <Danger style={{ color: color }}>{msg}!</Danger>
+            )}
+
             {items.map((single) => {
               finalPrice += single.price;
 
@@ -287,7 +324,9 @@ const Cart = () => {
                         <span>Order Quantity : </span> {single.quantity}
                       </ProductAmount>
                     </ProductAmountContainer>
-                    <ProductPrice>Rs {single.price} </ProductPrice>
+                    <ProductPrice>
+                      Rs {single.price.toLocaleString()}{" "}
+                    </ProductPrice>
                     <button
                       className="btn btn-danger"
                       onClick={() => {
@@ -359,7 +398,10 @@ const Cart = () => {
               <SummaryItemText>Total</SummaryItemText>
 
               <SummaryItemPrice>
-                Rs {finalPrice < 6000 ? (finalPrice += 350) : (finalPrice += 0)}
+                Rs{" "}
+                {finalPrice < 6000
+                  ? (finalPrice += 350).toLocaleString()
+                  : (finalPrice += 0).toLocaleString()}
               </SummaryItemPrice>
             </SummaryItem>
             {registered ? (
@@ -423,7 +465,9 @@ const Cart = () => {
                               <span>Order Quantity : </span> {single.quantity}
                             </ProductAmount>
                           </ProductAmountContainer>
-                          <ProductPrice>Rs {single.price} </ProductPrice>
+                          <ProductPrice>
+                            Rs {single.price.toLocaleString()}{" "}
+                          </ProductPrice>
                         </PriceDetail>
                       </Product>
                     );
@@ -480,7 +524,9 @@ const Cart = () => {
 
                   <SummaryItem type="total">
                     <SummaryItemText>Total</SummaryItemText>
-                    <SummaryItemPrice>Rs {prev.total}</SummaryItemPrice>
+                    <SummaryItemPrice>
+                      Rs {prev.total.toLocaleString()}
+                    </SummaryItemPrice>
                   </SummaryItem>
                 </Summary>
               </Bottom>

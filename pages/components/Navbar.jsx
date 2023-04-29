@@ -1,16 +1,14 @@
-import { Badge } from "@material-ui/core";
-import { Search, ShoppingCartOutlined } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { mobile } from "../responsive";
-import axios from "axios";
+import { mobile } from "../../server/responsive";
 import { useDispatch, useSelector } from "react-redux";
-import { brandAction, persisitor, registerAction, store } from "../slice";
-import { persistReducer } from "redux-persist";
-import { createAction } from "@reduxjs/toolkit";
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import { brandAction } from "../../server/slice";
+
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import Link from "next/link";
+
 const CustomLink = styled.span`
   font-size: 24px;
   cursor: pointer;
@@ -27,19 +25,22 @@ const MenuItem = styled.div`
   font-weight: 500;
   color: white ${mobile({ fontSize: "12px", marginLeft: "10px" })};
 `;
+const Circle = styled.span`
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
+  background-color: black;
+  border: 1px solid black;
+  text-align: center;
+  margin-bottom: 20px;
+`;
 
 const BootStrap = () => {
-  const [brands, setBrands] = useState([]);
-  const getBrands = async () => {
-    await axios
-      .post("https://cosmato-organic-pakistan.fly.dev/api/getBrand")
-      .then((res) => {
-        setBrands(res.data);
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
-  };
+  const [brands, setBrands] = useState(["yougee", "samba"]);
+  console.log(brands);
   const dispatch = useDispatch();
   const router = useRouter();
   const number = useSelector((state) => {
@@ -51,9 +52,19 @@ const BootStrap = () => {
       behavior: "smooth",
     });
   }
-  useEffect(() => {
-    getBrands();
-  }, []);
+  // const getBrands = async () => {
+  //   await axios
+  //     .get("/api/products/getBrand")
+  //     .then((res) => {
+  //       setBrands(res.data);
+  //     })
+  //     .catch((err) => {
+  //       throw new Error(err);
+  //     });
+  // };
+  // useEffect(() => {
+  //   getBrands();
+  // }, []);
   return (
     <nav
       class="navbar navbar-expand-lg navbar-light "
@@ -117,17 +128,17 @@ const BootStrap = () => {
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               {brands.map((item) => {
-                console.log(item.name);
+                console.log(item);
                 return (
-                  <a
-                    href={`/ProductList/${item.name.toLowerCase()}`}
+                  <Link
+                    href={`/${item.toLowerCase()}`}
                     class="dropdown-item"
                     onClick={() => {
-                      dispatch(brandAction.changeBrand(item.name));
+                      dispatch(brandAction.changeBrand(item));
                     }}
                   >
-                    {item.name}
-                  </a>
+                    {item}
+                  </Link>
                 );
               })}
             </div>
@@ -177,9 +188,10 @@ const BootStrap = () => {
                   cursor: "pointer",
                 }}
               >
-                <Badge badgeContent={number} color="primary">
-                  <ShoppingCartOutlined style={{ cursor: "pointer" }} />
-                </Badge>
+                <AiOutlineShoppingCart
+                  style={{ cursor: "pointer", fontSize: "25px" }}
+                />
+                <Circle>{number}</Circle>
               </CustomLink>
             </Link>
           </li>

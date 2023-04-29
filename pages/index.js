@@ -4,7 +4,7 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 
 import Slider from "./components/Slider";
-import { categories, brands } from "./data";
+import { categories, brands } from "../server/data";
 
 export default function Home() {
   return (

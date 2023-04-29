@@ -1,12 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { mobile } from "../responsive";
+import { mobile } from "../../server/responsive";
 import Navbar from "../components/Navbar";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import axios from "axios";
-import { orderAction, registerAction } from "../slice";
+import { orderAction, registerAction } from "../../server/slice";
 import { useRouter } from "next/router";
 
 import Announcement from "../components/Announcement";

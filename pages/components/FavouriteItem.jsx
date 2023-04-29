@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { mobile } from "../responsive";
-import { productAction } from "../slice";
+import { mobile } from "../../server/responsive";
+import { productAction } from "../../server/slice";
 import { useRouter } from "next/router";
 import React from "react";
 const Container = styled.div`
@@ -12,13 +12,13 @@ const Container = styled.div`
   margin-top: 30px;
   height: 70vh;
   position: relative;
+  ${mobile({ height: "90vh" })}
 `;
 
 const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
-  ${mobile({ height: "40vh" })}
 `;
 
 const Info = styled.div`
@@ -37,6 +37,8 @@ const Title = styled.h4`
   color: ${(props) =>
     props.color == "OUR FAVOURITES" ? "lightblack" : "white"};
   margin-bottom: 0px;
+  text-align: center;
+  ${mobile({ marginBottom: "-25px" })}
 `;
 
 const Button = styled.button`
@@ -54,7 +56,7 @@ const FavouriteItem = ({ item, title }) => {
   const setProduct = productAction.setProduct;
   const fetchProduct = async (name) => {
     await axios
-      .post("https://cosmato-organic-pakistan.fly.dev/api/getSomeProduct", {
+      .post("/api/products/getSingle", {
         productName: name,
       })
       .then((res) => {

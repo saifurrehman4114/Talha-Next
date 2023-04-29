@@ -10,6 +10,8 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100vw;
+  overflow: hidden;
 `;
 const TextBox = styled.div``;
 const TextHead = styled.h1`
@@ -24,13 +26,17 @@ const Text = styled.p`
 `;
 
 const About = () => {
-  const { ref, inView } = useInView();
-  // console.log(inView);
-  // const variants = {
-  //   hidden: { opacity: 0, x: -200 },
-  //   visible: { opacity: 1, x: 0 },
-  // };
-
+  const { ref: ref1, inView: inView1 } = useInView({ threshold: 0.1 });
+  const { ref: ref2, inView: inView2 } = useInView({ threshold: 0.1 });
+  const { ref: ref3, inView: inView3 } = useInView({ threshold: 0.1 });
+  const variants = {
+    hidden: { opacity: 0, x: -200 },
+    visible: { opacity: 1, x: 0 },
+  };
+  const variants1 = {
+    hidden: { opacity: 0, x: 200 },
+    visible: { opacity: 1, x: 0 },
+  };
   return (
     <div>
       <Announcement />
@@ -56,10 +62,9 @@ const About = () => {
           <motion.h1 className="textHead">OUR HISTORY</motion.h1>
           <Text>
             We are the official importers of Yougee and Samba in Pakistan. We
-            have been delivering these products since 2010. We have our head
-            office in Lahore and we are delivering these products all over
-            Pakistan. We are the biggest importer of Yougee and Saba all accross
-            Pakistan because of our reasonable pricing.
+            have been delivering these products since 2010.We are the biggest
+            importer of Yougee and Saba all accross Pakistan because of our
+            reasonable pricing.
           </Text>
         </motion.div>
         <motion.div
@@ -77,7 +82,48 @@ const About = () => {
             for all.{" "}
           </Text>
         </motion.div>
+        <motion.div
+          transition={{ ease: "easeOut", duration: 1.5 }}
+          ref={ref1}
+          variants={variants1}
+          animate={inView1 ? "visible" : "hidden"}
+          className="textContainer"
+        >
+          <motion.h1 className="textHead">OUR MISSION</motion.h1>
+          <Text>
+            To provide geniune best quality products with affordable, market
+            competitive rates in an efficient manner through remarkable supply
+            chain process
+          </Text>
+        </motion.div>
       </Container>
+      <motion.div
+        transition={{ ease: "easeOut", duration: 1.5 }}
+        ref={ref2}
+        variants={variants}
+        animate={inView2 ? "visible" : "hidden"}
+        className="textContainer"
+      >
+        <motion.h1 className="textHead">YOUGEE</motion.h1>
+        <Text>
+          Yougee Cosmorganic provides 100% Natural and Organic Hair Car
+          Products.
+        </Text>
+      </motion.div>
+      <motion.div
+        transition={{ ease: "easeOut", duration: 1.5 }}
+        ref={ref3}
+        variants={variants}
+        animate={inView3 ? "visible" : "hidden"}
+        className="textContainer"
+      >
+        <motion.h1 className="textHead">SAMBAA</motion.h1>
+        <Text>
+          Samba Cosmetics understands this desire for renewal and therefore
+          delivers products that not only guarantee results but also give new
+          life to the hair through the powerful action of our assets.
+        </Text>
+      </motion.div>
       <Footer />
     </div>
   );

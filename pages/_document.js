@@ -4,7 +4,9 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
-        <title>Cosmeto-Pakistan Official importer of Yougee and Sambaa</title>
+        <title>
+          Cosmeto Pakistan's Official importer of Yougee and Sambaa Products
+        </title>
         <link
           rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
@@ -35,9 +37,9 @@ export default function Document() {
         <meta name="description" content="youge and samba in pakistan" />
         <meta
           name="keywords"
-          content="yougee,samba,cosmetics,pakistan yougee,pakistan sambaa,hair mask,hair color cream,color cream,hair, hair cream,conditioner, "
+          content="yougee,samba,cosmetics,pakistan yougee,pakistan sambaa,hair mask,hair color cream,color cream,hair, hair cream,conditioner,yougee pakistan,yougee,yougee products,samba products"
         />
-        <link rel="icon" href="/logo.png"></link>
+        <link rel="icon" href="/favicon-32x32.png"></link>
       </Head>
       <body>
         <Main />
