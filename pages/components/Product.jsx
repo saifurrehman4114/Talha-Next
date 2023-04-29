@@ -73,6 +73,7 @@ const Name = styled.h4`
   opacity: 1;
   font-size: 18px;
   font-family: sans-serif;
+  text-align: center;
 `;
 
 const Product = ({ item }) => {
