@@ -8,7 +8,7 @@ export const sliderItems = [
   },
   {
     id: 1,
-    img: "https://i.ytimg.com/vi/Tj6UcuLXBU0/maxresdefault.jpg",
+    img: "/samba_banner.jpg",
     title: "SAMBA",
     desc: "HAVE BRAZILIAN MAGIC SAMBA IN PAKISTAN NOW!",
     bg: "f5fafd",

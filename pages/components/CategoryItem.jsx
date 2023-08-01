@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import { mobile } from "../../server/responsive";
 import Link from "next/link";
-
+import Head from "next/head";
 const Container = styled.div`
   flex: 1;
 

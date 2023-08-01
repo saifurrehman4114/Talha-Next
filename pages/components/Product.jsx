@@ -96,12 +96,7 @@ const Product = ({ item }) => {
         <Name>
           <strong> {item.name}</strong>
         </Name>
-        <Name>
-          <strong> Quantity:</strong> {item.quantity} ml
-        </Name>
-        <Name>
-          <strong> Price:</strong> {item.price}{" "}
-        </Name>
+
         <button className="btn btn-primary">show more</button>
       </Info>
     </Container>

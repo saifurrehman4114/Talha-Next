@@ -7,7 +7,7 @@
   color: white;
 }
 .textHead {
-  color: green;
+  color: black;
   text-align: center;
 }
 .textContainer {
@@ -19,8 +19,13 @@
   font-family: "Roboto", sans-serif;
   text-align: center;
   font-size: 19px;
-  font-weight: 500;
 }
+
+.nav-item:hover {
+  border: 1px solid black;
+  border-radius: 20px;
+}
+
 @media (max-width: 400px) {
   .textHead {
     font-size: 26px;

@@ -61,7 +61,19 @@ const ContainerProducts = styled.div`
   justify-content: space-between;
 `;
 const Option = styled.option``;
-
+const TitleImage = styled.img`
+  object-position: center;
+  width: 100%;
+  height: 100%;
+`;
+const ImageContainer = styled.div`
+  height: 65vh; /* Adjust the height as needed */
+  background-image: url("https://sambacosmetics.in/wp-content/uploads/2020/07/produtcs2.png");
+  background-repeat: no-repeat;
+  background-position: top;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+`;
 function Samba({ product }) {
   const [products, setProducts] = useState(product);
   const [input, setInput] = useState("");
@@ -82,25 +94,15 @@ function Samba({ product }) {
         console.log(err);
       });
   };
-  //   const fetchProducts = async () => {
-  //     await axios
-  //       .post("/api/getAllProducts", {
-  //         brand: brand,
-  //       })
-  //       .then((res) => {
-  //         setProducts(res.data);
-  //       })
-  //       .catch((err) => {
-  //         throw new Error(err);
-  //       });
-  //   };
 
   return (
     <Container>
       <Announcement></Announcement>
       <Navbar></Navbar>
-      <Title>SAMBA PRODUCTS</Title>
-
+      {/* <Title>SAMBA PRODUCTS</Title> */}
+      <ImageContainer>
+        {/* <TitleImage src="https://sambacosmetics.in/wp-content/uploads/2020/07/produtcs2.png"></TitleImage> */}
+      </ImageContainer>
       <FilterContainer>
         <Filter>
           <Input value={input} onChange={(e) => setInput(e.target.value)} />

@@ -11,7 +11,6 @@ const Container = styled.div`
   display: flex;
   position: relative;
   overflow: hidden;
-  ${mobile({ display: "none" })}
 `;
 
 const Arrow = styled.div`
@@ -44,6 +43,7 @@ const Slide = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
+  ${mobile({ height: "90vh" })}
   align-items: center;
   background-color: #${(props) => props.bg};
 `;
@@ -55,11 +55,15 @@ const ImgContainer = styled.div`
 
 const Image = styled.img`
   height: 80%;
+  width: 100%;
+  object-position: center;
+  ${mobile({ objectFit: "cover" })}
 `;
 
 const InfoContainer = styled.div`
   flex: 1;
   padding: 50px;
+  ${mobile({ display: "none" })}
 `;
 
 const Title = styled.h1`

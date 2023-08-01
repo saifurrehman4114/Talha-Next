@@ -8,7 +8,6 @@ import { brandAction } from "../../server/slice";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import Link from "next/link";
-
 const CustomLink = styled.span`
   font-size: 24px;
   cursor: pointer;
@@ -147,12 +146,10 @@ const BootStrap = () => {
             <Link href="/about">
               <CustomLink
                 style={{
-                  textDecoration: "none",
                   color: "black",
                   fontSize: "20px",
                   margin: "0px 40px",
                   fontFamily: "revert",
-                  textDecoration: "underline",
                   cursor: "pointer",
                 }}
               >
@@ -163,12 +160,10 @@ const BootStrap = () => {
           <li class="nav-item ">
             <CustomLink
               style={{
-                textDecoration: "none",
                 color: "black",
                 fontSize: "20px",
                 margin: "0px 40px",
                 fontFamily: "revert",
-                textDecoration: "underline",
                 cursor: "pointer",
               }}
               onClick={scrollToBottom}

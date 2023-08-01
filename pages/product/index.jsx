@@ -76,14 +76,15 @@ const Product = () => {
     })
   );
   const [selectedVolume, setSelectedVolume] = useState(10);
-
+  const [selectedQuantity, setSelectedQuantity] = useState(item.quantity[0]);
+  const [priceIndex, setPriceIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [colorArray, setColorArray] = useState([]);
   const [volume, setVolume] = useState();
   const addItem = orderAction.addItem;
   const dispatch = useDispatch();
   const [finalPriceCream, setFinalPriceCream] = useState(0);
-  const [finalPrice, setFinalPrice] = useState(item.price);
+  const [finalPrice, setFinalPrice] = useState(item.price[priceIndex]);
   const router = useRouter();
   const handleSubmit = () => {
     if (item.category === "Hair Color Cream" && colorArray.length > 0) {
@@ -93,7 +94,7 @@ const Product = () => {
         color: colorArray,
         category: "Hair Color Cream",
         quantity: quantity,
-        measure: item.quantity,
+        measure: selectedQuantity,
         img: item.img[0],
         id: item._id,
       };
@@ -111,7 +112,7 @@ const Product = () => {
         category: "developer",
         volume: selectedVolume,
         quantity: quantity,
-        measure: item.quantity,
+        measure: selectedQuantity,
         img: item.img[0],
         id: item._id,
       };
@@ -123,8 +124,8 @@ const Product = () => {
         name: item.name,
         price: finalPrice,
         quantity: quantity,
-        itemPrice: item.price,
-        measure: item.quantity,
+        itemPrice: item.price[priceIndex],
+        measure: selectedQuantity,
         img: item.img[0],
         id: item._id,
       };
@@ -203,19 +204,20 @@ const Product = () => {
               <br />
               {item.description}
             </Desc>
-            <Desc>
-              <strong>QUANTITY: </strong>
-              {item.quantity} ml
-            </Desc>
+
             <Desc>
               <strong>Number of items: </strong>
               <button
                 onClick={() => {
                   setFinalPriceCream((state) => {
-                    return item.price * colorArray.length * (quantity + 1);
+                    return (
+                      item.price[priceIndex] *
+                      colorArray.length *
+                      (quantity + 1)
+                    );
                   });
                   setFinalPrice((state) => {
-                    return state + item.price;
+                    return state + item.price[priceIndex];
                   });
                   setQuantity((state) => {
                     return state + 1;
@@ -231,10 +233,14 @@ const Product = () => {
                 onClick={() => {
                   if (quantity > 1) {
                     setFinalPrice((state) => {
-                      return state - item.price;
+                      return state - item.price[priceIndex];
                     });
                     setFinalPriceCream((state) => {
-                      return item.price * colorArray.length * (quantity - 1);
+                      return (
+                        item.price[priceIndex] *
+                        colorArray.length *
+                        (quantity - 1)
+                      );
                     });
                   }
                   setQuantity((state) => {
@@ -297,7 +303,9 @@ const Product = () => {
                             return color != item;
                           });
                           setFinalPriceCream((state) => {
-                            return item.price * newArr.length * quantity;
+                            return (
+                              item.price[priceIndex] * newArr.length * quantity
+                            );
                           });
                           return newArr;
                         });
@@ -322,7 +330,9 @@ const Product = () => {
                       onClick={() => {
                         setFinalPriceCream((state) => {
                           return (
-                            item.price * (colorArray.length + 1) * quantity
+                            item.price[priceIndex] *
+                            (colorArray.length + 1) *
+                            quantity
                           );
                         });
                         setColorArray([...colorArray, iteminner]);
@@ -334,9 +344,25 @@ const Product = () => {
                 })}
               </Desc>
             )}
-
             <Desc>
-              <strong> PRICE : </strong>Rs {item.price} (per item)
+              <strong>QUANTITY (ml) : </strong>
+
+              <select
+                value={selectedQuantity}
+                onChange={(e) => {
+                  setSelectedQuantity(e.target.value);
+                  setPriceIndex(e.target.selectedIndex);
+                  setFinalPrice(item.price[e.target.selectedIndex]);
+                  setQuantity(1);
+                }}
+              >
+                {item.quantity.map((single) => {
+                  return <option value={single}>{single}</option>;
+                })}
+              </select>
+            </Desc>
+            <Desc>
+              <strong> PRICE : </strong>Rs {item.price[priceIndex]} (per item)
             </Desc>
             <Desc>
               <strong>TOTAL PRICE : </strong>Rs{" "}

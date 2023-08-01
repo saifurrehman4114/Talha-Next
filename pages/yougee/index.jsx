@@ -63,6 +63,19 @@ const ContainerProducts = styled.div`
 `;
 const Option = styled.option``;
 
+const TitleImage = styled.img`
+  object-fit: cover;
+  width: 100%;
+  max-height: 100%;
+`;
+const ImageContainer = styled.div`
+  height: 65vh; /* Adjust the height as needed */
+  background-image: url("https://assets.isu.pub/document-structure/200211100821-db3e0097cb52b9167124ed1e70ebe941/v1/c1446e47fd1b739658e6245a65114810.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+`;
 function Samba({ product }) {
   const [products, setProducts] = useState(product);
   const [input, setInput] = useState("");
@@ -83,25 +96,15 @@ function Samba({ product }) {
         console.log(err);
       });
   };
-  const fetchProducts = async () => {
-    await axios
-      .post("/api/getAllProducts", {
-        brand: brand,
-      })
-      .then((res) => {
-        setProducts(res.data);
-      })
-      .catch((err) => {
-        throw new Error(err);
-      });
-  };
 
   return (
     <Container>
       <Announcement></Announcement>
       <Navbar></Navbar>
-      <Title>YOUGEE PRODUCTS</Title>
-
+      {/* <Title>YOUGEE PRODUCTS</Title> */}
+      <ImageContainer>
+        {/* <TitleImage src="https://assets.isu.pub/document-structure/200211100821-db3e0097cb52b9167124ed1e70ebe941/v1/c1446e47fd1b739658e6245a65114810.jpg"></TitleImage> */}
+      </ImageContainer>
       <FilterContainer>
         <Filter>
           <Input value={input} onChange={(e) => setInput(e.target.value)} />

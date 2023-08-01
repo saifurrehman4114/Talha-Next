@@ -22,12 +22,12 @@ export function definingSchema() {
   const productSchema = new schema({
     name: { type: String },
     category: { type: String, default: "Hair-Cosmetics" },
-    price: { type: Number },
+    price: { type: Array },
     brand: { type: String },
     status: { type: String, default: "Available" },
     description: { type: String },
     guide: { type: String },
-    quantity: { type: String },
+    quantity: { type: Array },
     features: { type: Array },
     img: { type: Array },
     volume: { type: Array, default: [] },
@@ -56,6 +56,7 @@ export function definingSchema() {
   });
   const modal = mongoose.model;
   const userModal = mongoose.models.User || modal("User", userSchema);
+  // mongoose.deleteModel("products");
   const productModal =
     mongoose.models.products || modal("products", productSchema);
   const orderModal = mongoose.models.orders || modal("orders", orderSchema);
